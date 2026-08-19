@@ -230,8 +230,11 @@ type AppState = {
   setLanguage: (lang: Language) => void;
   categories: Category[];
   addCategory: (input: { name: string; type: TxType; walletId?: string }) => boolean;
-  deleteCategory: (id: string) => void;
+  renameCategory: (id: string, name: string) => boolean;
+  deleteCategory: (id: string) => boolean;
+  categoryUsage: (id: string) => number;
   categoriesFor: (type: TxType, walletId?: string) => Category[];
+
   locked: boolean;
   unlockApp: (pin?: string) => boolean;
   lockApp: () => void;
@@ -294,10 +297,52 @@ export function AppProvider({ children }: { children: ReactNode }) {
     [],
   );
 
-  const deleteCategory = useCallback((id: string) => {
-    if (!id) return;
-    setCategories((prev) => prev.filter((c) => c.id !== id));
+  const categoryUsage = useCallback(
+    (id: string) => {
+      const cat = categories.find((c) => c.id === id);
+      if (!cat) return 0;
+      return transactions.filter(
+        (tx) =>
+          tx.type === cat.type &&
+          tx.category.toLowerCase() === cat.name.toLowerCase() &&
+          (!cat.walletId || tx.walletId === cat.walletId),
+      ).length;
+    },
+    [categories, transactions],
+  );
+
+  const renameCategory = useCallback((id: string, next: string) => {
+    const name = next.trim().replace(/\s+/g, " ");
+    if (name.length < 2 || name.length > 24) return false;
+    let ok = false;
+    setCategories((prev) => {
+      const target = prev.find((c) => c.id === id);
+      if (!target) return prev;
+      const duplicate = prev.some(
+        (c) =>
+          c.id !== id &&
+          c.type === target.type &&
+          c.name.toLowerCase() === name.toLowerCase() &&
+          (c.walletId ?? "") === (target.walletId ?? ""),
+      );
+      if (duplicate) return prev;
+      ok = true;
+      return prev.map((c) => (c.id === id ? { ...c, name } : c));
+    });
+    return ok;
   }, []);
+
+  const deleteCategory = useCallback(
+    (id: string) => {
+      if (!id) return false;
+      if (categoryUsage(id) > 0) return false;
+      setCategories((prev) => prev.filter((c) => c.id !== id));
+      return true;
+    },
+    [categoryUsage],
+  );
+
+
 
   const categoriesFor = useCallback(
     (type: TxType, walletId?: string) =>
@@ -622,7 +667,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
       setLanguage,
       categories,
       addCategory,
+      renameCategory,
       deleteCategory,
+      categoryUsage,
+
       categoriesFor,
       locked,
       unlockApp,
@@ -662,7 +710,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
       language,
       categories,
       addCategory,
+      renameCategory,
       deleteCategory,
+      categoryUsage,
+
       categoriesFor,
       locked,
       unlockApp,

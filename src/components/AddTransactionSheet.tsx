@@ -177,7 +177,7 @@ export function AddTransactionSheet() {
         </div>
 
         {/* Step 1 — Amount */}
-        <StepLabel step={1} htmlFor="tx-amount" text="Nominal" />
+        <StepLabel htmlFor="tx-amount" text="Nominal" />
         <div
           className={`mt-1 flex items-center gap-2 rounded-[16px] border bg-surface-container-low px-4 py-3 ${
             liveErrors.amount ? "border-error" : "border-outline-variant/30"
@@ -201,7 +201,7 @@ export function AddTransactionSheet() {
 
         {/* Step 2 — Wallet type then registered sub-account */}
         <Step enabled={step1Done} hint="Isi nominal terlebih dahulu.">
-          <StepLabel step={2} text="Akun Dompet" />
+          <StepLabel text="Akun Dompet" />
           <div className="mt-2 grid grid-cols-3 gap-2" role="radiogroup" aria-label="Jenis akun">
             {ALLOWED_WALLET_TYPES.map((t) => {
               const active = walletType === t.value;
@@ -280,7 +280,7 @@ export function AddTransactionSheet() {
 
         {/* Step 3 — Category (user-managed, may be account-specific) */}
         <Step enabled={step2Done} hint="Pilih akun dompet terlebih dahulu.">
-          <StepLabel step={3} text="Kategori" />
+          <StepLabel text="Kategori" />
           {availableCategories.length ? (
             <div className="mt-2 flex gap-2 swipe-x" role="group" aria-label="Kategori">
               {availableCategories.map((c) => (
@@ -310,7 +310,7 @@ export function AddTransactionSheet() {
 
         {/* Step 4 — Date */}
         <Step enabled={step3Done} hint="Pilih kategori terlebih dahulu.">
-          <StepLabel step={4} htmlFor="tx-date" text="Tanggal" />
+          <StepLabel htmlFor="tx-date" text="Tanggal" />
           <input
             id="tx-date"
             type="date"
@@ -328,7 +328,7 @@ export function AddTransactionSheet() {
 
         {/* Step 5 — Optional note */}
         <Step enabled={step4Done} hint="Isi tanggal terlebih dahulu.">
-          <StepLabel step={5} htmlFor="tx-note" text="Catatan Singkat (opsional)" />
+          <StepLabel htmlFor="tx-note" text="Catatan Singkat (opsional)" />
           <input
             id="tx-note"
             value={note}
@@ -355,34 +355,17 @@ export function AddTransactionSheet() {
   );
 }
 
-function StepLabel({
-  step,
-  text,
-  htmlFor,
-}: {
-  step: number;
-  text: string;
-  htmlFor?: string;
-}) {
-  const content = (
-    <>
-      <span className="mr-2 inline-flex h-4 w-4 items-center justify-center rounded-full bg-primary-container/40 text-[10px] font-bold text-primary">
-        {step}
-      </span>
-      {text}
-    </>
-  );
+function StepLabel({ text, htmlFor }: { text: string; htmlFor?: string }) {
   if (htmlFor) {
     return (
       <label className="mt-4 block text-label uppercase text-on-surface-variant" htmlFor={htmlFor}>
-        {content}
+        {text}
       </label>
     );
   }
-  return (
-    <span className="mt-4 block text-label uppercase text-on-surface-variant">{content}</span>
-  );
+  return <span className="mt-4 block text-label uppercase text-on-surface-variant">{text}</span>;
 }
+
 
 function Step({
   enabled,

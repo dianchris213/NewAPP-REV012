@@ -48,6 +48,16 @@ type Dict = {
   unlock: string;
   accountHistory: string;
   accountHistoryEmpty: string;
+  rename: string;
+  renameCategory: string;
+  categoryInUse: string;
+  searchPlaceholder: string;
+  dateFrom: string;
+  dateTo: string;
+  resetFilters: string;
+  noResults: string;
+  categoryDeleted: string;
+  categoryRenamed: string;
 };
 
 const dictionaries: Record<Language, Dict> = {
@@ -99,6 +109,16 @@ const dictionaries: Record<Language, Dict> = {
     unlock: "Buka dengan Biometrik",
     accountHistory: "Riwayat Akun",
     accountHistoryEmpty: "Belum ada transaksi pada akun ini.",
+    rename: "Ubah nama",
+    renameCategory: "Ubah Nama Kategori",
+    categoryInUse: "Kategori masih dipakai transaksi dan tidak bisa dihapus.",
+    searchPlaceholder: "Cari kategori atau catatan",
+    dateFrom: "Dari tanggal",
+    dateTo: "Sampai tanggal",
+    resetFilters: "Atur ulang filter",
+    noResults: "Tidak ada transaksi yang cocok.",
+    categoryDeleted: "Kategori dihapus",
+    categoryRenamed: "Nama kategori diperbarui",
   },
   en: {
     settingsEyebrow: "Configuration",
@@ -148,6 +168,16 @@ const dictionaries: Record<Language, Dict> = {
     unlock: "Unlock with Biometrics",
     accountHistory: "Account History",
     accountHistoryEmpty: "No transactions on this account yet.",
+    rename: "Rename",
+    renameCategory: "Rename Category",
+    categoryInUse: "This category is used by transactions and cannot be deleted.",
+    searchPlaceholder: "Search category or note",
+    dateFrom: "From date",
+    dateTo: "To date",
+    resetFilters: "Reset filters",
+    noResults: "No matching transactions.",
+    categoryDeleted: "Category deleted",
+    categoryRenamed: "Category renamed",
   },
 };
 
