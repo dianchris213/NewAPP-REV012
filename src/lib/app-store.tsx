@@ -230,8 +230,11 @@ type AppState = {
   setLanguage: (lang: Language) => void;
   categories: Category[];
   addCategory: (input: { name: string; type: TxType; walletId?: string }) => boolean;
-  deleteCategory: (id: string) => void;
+  renameCategory: (id: string, name: string) => boolean;
+  deleteCategory: (id: string) => boolean;
+  categoryUsage: (id: string) => number;
   categoriesFor: (type: TxType, walletId?: string) => Category[];
+
   locked: boolean;
   unlockApp: (pin?: string) => boolean;
   lockApp: () => void;
