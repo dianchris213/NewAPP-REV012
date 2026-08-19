@@ -583,27 +583,63 @@ function AddWalletSheet({
             </p>
           ) : null}
 
-          {/* Sub-menu: provider list per selected type. */}
+          {/* Sub-menu: responsive grid of provider cards (no native select). */}
           {type ? (
-            <label className="flex flex-col gap-1">
-              <span className="text-meta text-on-surface-variant/80">
-                {type === "cash" ? "Sumber Dana" : type === "bank" ? "Nama Bank" : "Penyedia E-Wallet"}
+            <div className="flex flex-col gap-2">
+              <span className="text-meta text-on-surface-variant/80" id="wallet-provider-label">
+                {type === "cash"
+                  ? "Sumber Dana"
+                  : type === "bank"
+                    ? "Nama Bank"
+                    : "Penyedia E-Wallet"}
               </span>
-              <select
-                data-testid="wallet-provider"
-                value={provider}
-                onChange={(e) => setProvider(e.target.value)}
-                className="h-12 rounded-2xl border border-outline-variant/30 bg-surface-container px-4 text-[14px] text-on-surface outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+              <div
+                role="radiogroup"
+                aria-labelledby="wallet-provider-label"
+                data-testid="wallet-provider-grid"
+                className="grid grid-cols-3 gap-2 sm:grid-cols-4"
               >
-                <option value="">Pilih...</option>
-                {WALLET_PROVIDERS[type].map((p) => (
-                  <option key={p} value={p}>
-                    {p}
-                  </option>
-                ))}
-              </select>
-            </label>
+                {WALLET_PROVIDERS[type].map((p) => {
+                  const active = provider === p;
+                  return (
+                    <button
+                      key={p}
+                      type="button"
+                      role="radio"
+                      aria-checked={active}
+                      data-testid={`wallet-provider-${p}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setProvider(p);
+                        setError(undefined);
+                        setName((prev) => (prev.trim() ? prev : p));
+                      }}
+                      className={`flex h-20 flex-col items-center justify-center gap-1.5 rounded-2xl border px-1.5 text-center transition-colors focus-visible:ring-2 focus-visible:ring-primary/60 ${
+                        active
+                          ? "border-primary bg-primary-container/25 text-primary"
+                          : "border-outline-variant/30 text-on-surface-variant"
+                      }`}
+                    >
+                      <span
+                        aria-hidden="true"
+                        className={`flex h-8 w-8 items-center justify-center rounded-full text-[11px] font-bold ${
+                          active
+                            ? "bg-primary-container/40 text-primary"
+                            : "bg-surface-variant text-on-surface-variant"
+                        }`}
+                      >
+                        {p.slice(0, 2).toUpperCase()}
+                      </span>
+                      <span className="w-full truncate text-[11px] font-semibold leading-tight">
+                        {p}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           ) : null}
+
 
           <label className="flex flex-col gap-1">
             <span className="text-meta text-on-surface-variant/80">Nama Kantong</span>
