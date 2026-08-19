@@ -710,7 +710,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
       language,
       categories,
       addCategory,
+      renameCategory,
       deleteCategory,
+      categoryUsage,
+
       categoriesFor,
       locked,
       unlockApp,
