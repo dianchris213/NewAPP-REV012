@@ -667,7 +667,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
       setLanguage,
       categories,
       addCategory,
+      renameCategory,
       deleteCategory,
+      categoryUsage,
+
       categoriesFor,
       locked,
       unlockApp,
