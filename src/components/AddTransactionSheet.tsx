@@ -355,34 +355,17 @@ export function AddTransactionSheet() {
   );
 }
 
-function StepLabel({
-  step,
-  text,
-  htmlFor,
-}: {
-  step: number;
-  text: string;
-  htmlFor?: string;
-}) {
-  const content = (
-    <>
-      <span className="mr-2 inline-flex h-4 w-4 items-center justify-center rounded-full bg-primary-container/40 text-[10px] font-bold text-primary">
-        {step}
-      </span>
-      {text}
-    </>
-  );
+function StepLabel({ text, htmlFor }: { text: string; htmlFor?: string }) {
   if (htmlFor) {
     return (
       <label className="mt-4 block text-label uppercase text-on-surface-variant" htmlFor={htmlFor}>
-        {content}
+        {text}
       </label>
     );
   }
-  return (
-    <span className="mt-4 block text-label uppercase text-on-surface-variant">{content}</span>
-  );
+  return <span className="mt-4 block text-label uppercase text-on-surface-variant">{text}</span>;
 }
+
 
 function Step({
   enabled,
